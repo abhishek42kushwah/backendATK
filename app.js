@@ -1,6 +1,7 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const connectDB = require('./config/db');
+const express = require("express");
+const dotenv = require("dotenv");
+const connectDB = require("./config/db");
+const cors = require("cors");
 
 // Load env
 dotenv.config();
@@ -8,12 +9,20 @@ dotenv.config();
 // Connect DB
 connectDB();
 
-// App init
+
 const app = express();
 app.use(express.json());
 
-// Routes
-app.use('/api', require('./routes/authRoutes'));
+
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "http://localhost:5000", "http://localhost:3000"],
+    credentials: true,
+  })
+);
+
+// ✅ Then add routes
+app.use("/api", require("./routes/authRoutes"));
 
 // Start server
 const PORT = process.env.PORT || 5000;
